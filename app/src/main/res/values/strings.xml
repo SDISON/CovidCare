@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="button">Button</string>
+    <string name="activeCases">TextView</string>
+    <string name="recoveredCases">TextView</string>
+    <string name="totalCases">TextView</string>
+    <string name="deathCases">TextView</string>
+    <string name="status">TextView</string>
+    <string name="protect">Protect</string>
+    <string name="labs">Labs</string>
+    <string name="call">Call</string>
+    <string name="assess">Assess</string>
+    <string name="call_lab">Call</string>
+    <string name="switch_list">Switch</string>
+    <string name="switch_detail">Switch</string>
+    <string name="detailview">DetailView</string>
+    <string name="listview">ListView</string>
+</resources>
