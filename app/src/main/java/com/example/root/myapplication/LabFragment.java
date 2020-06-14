@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +34,9 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class LabFragment extends Fragment implements AdapterView.OnItemSelectedListener, FetchDataCallbackInterface, AdapterView.OnItemClickListener {
 
-    private static final String TAG = "debugging";
+    private static final String TAG = "LabFragment_debugging";
     public Spinner spinner;
-    String[] states = { " Please Select One", "Maharashtra", "Gujarat", "Tamil Nadu", "Delhi", "Rajasthan", "Madhya Pradesh", "Uttar Pradesh", "West Bengal", "Andhra Pradesh", "Punjab", "Telangana", "Bihar", "Jammu and Kashmir", "Karnataka", "Haryana", "Odisha", "Kerala", "Jharkhand", "Chandigarh", "Tripura", "Assam", "Uttarakhand", "Himachal Pradesh", "Chhattisgarh", "Ladakh", "Andaman & Nicobar", "Goa", "Puducherry","Meghalaya", "Manipur", "Mizoram", "Arunachal Pradesh", "Dadra and Nagar Haveli and Daman and Diu", "Nagaland", "Lakshadweep", "Sikkim"};
+    String[] states = { " Please Select One", "Maharashtra", "Gujarat", "Tamil Nadu", "Delhi", "Rajasthan", "Madhya Pradesh", "Uttar Pradesh", "West Bengal", "Andhra Pradesh", "Punjab", "Telangana", "Bihar", "Jammu and Kashmir", "Karnataka", "Haryana", "Odisha", "Kerala", "Jharkhand", "Chandigarh", "Tripura", "Assam", "Uttarakhand", "Himachal Pradesh", "Chhattisgarh", "Ladakh", "Andaman & Nicobar", "Goa", "Puducherry","Meghalaya", "Manipur", "Mizoram", "Arunachal Pradesh", "Dadra and Nagar Haveli", "Nagaland", "Lakshadweep", "Sikkim"};
     public ListView lab_list;
     ArrayList<String> listItems = new ArrayList<>();
     ArrayAdapter<String> adapter2;
@@ -42,42 +44,60 @@ public class LabFragment extends Fragment implements AdapterView.OnItemSelectedL
     HashMap<String, ArrayList<String>> lab_mp;
     HashMap<String, String> phone_mp;
     public boolean checker = false;
+    public Context context;
+    public boolean updating;
+    public View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.nav_labs, container, false);
+        root = inflater.inflate(R.layout.nav_labs, container, false);
         Arrays.sort(states);
+        updating = true;
+        initializeView();
+        context = getContext();
+        checkData();
+        return root;
+    }
+
+    public void initializeView()
+    {
         spinner = root.findViewById(R.id.spinner_lab);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, states);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, states);
+        //adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
         spinner.setEnabled(false);
         lab_list = root.findViewById(R.id.lab_list);
-        adapter2 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, listItems);
+        adapter2 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, listItems);
         lab_list.setAdapter(adapter2);
         lab_list.setOnItemClickListener(this);
         gif_cases = root.findViewById(R.id.gif_cases);
-        checkConnectivity();
-        return root;
+        lab_mp = new HashMap<>();
+        phone_mp = new HashMap<>();
     }
 
-
-    public void checkConnectivity()
-    {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo!= null && networkInfo.isConnected())
-            getData();
-        else
-            Toast.makeText(getActivity(), " No Internet connectivity", Toast.LENGTH_SHORT).show();
+    private void updateData_(String url){
+        updateData obj = new updateData(url, context, this);
+        obj.start();
     }
 
-    public void getData()
+    private void checkData()
     {
         gif_cases.setVisibility(View.VISIBLE);
-        new RetrieveData("https://api.covid19india.org/resources/resources.json", this).execute();
+        String result1 = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("jsonString3", "");
+        if(result1.equals("")) {
+            checkConnectivity obj = new checkConnectivity("https://api.covid19india.org/resources/resources.json", context, this);
+            obj.start();
+        }
+        else{
+            setData_("https://api.covid19india.org/resources/resources.json", result1);
+        }
+    }
+
+    public void getData(String url)
+    {
+        new RetrieveData(url, this).execute();
     }
 
     @Override
@@ -95,7 +115,7 @@ public class LabFragment extends Fragment implements AdapterView.OnItemSelectedL
                 checker = true;
         }
         catch(Exception e){
-            Log.e("TAG", e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -106,34 +126,25 @@ public class LabFragment extends Fragment implements AdapterView.OnItemSelectedL
 
     @Override
     public void fetchDataCallback(String url, String result) {
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(result);
-            lab_mp = new HashMap<>();
-            phone_mp = new HashMap<>();
-            JSONArray array = jsonObject.getJSONArray("resources");
-            for (int i = 0; i < array.length(); i++) {
-                String s = array.getJSONObject(i).getString("state");
-                String w = array.getJSONObject(i).getString("nameoftheorganisation");
-                String x = array.getJSONObject(i).getString("category");
-                String y = array.getJSONObject(i).getString("phonenumber");
-                y = y.split(",")[0];
-                if(x.equals("CoVID-19 Testing Lab")) {
-                    phone_mp.put(w, y);
-                    if (lab_mp.containsKey(s)) {
-                        ArrayList<String> temp = lab_mp.get(s);
-                        temp.add(w);
-                    } else {
-                        lab_mp.put(s, new ArrayList<String>());
-                        ArrayList<String> temp = lab_mp.get(s);
-                        temp.add(w);
-                    }
-                }
-            }
-            gif_cases.setVisibility(View.GONE);
-            spinner.setEnabled(true);
-        }catch(Exception e) {
-            Log.e("TAG", e.getMessage());
+        Log.v(TAG, "in fetch");
+        saveData save_data = new saveData(url, result, context);
+        save_data.saving();
+        setData_(url, result);
+    }
+
+    public void setData_(String url, String result)
+    {
+        HashMap<String, ArrayList<String>> lab_mp_temp = new HashMap<>();
+        HashMap<String, String> phone_mp_temp = new HashMap<>();
+        setData set_data = new setData(url, result, lab_mp_temp, phone_mp_temp);
+        lab_mp = lab_mp_temp;
+        phone_mp = phone_mp_temp;
+        int temp = set_data.start();
+        gif_cases.setVisibility(View.GONE);
+        spinner.setEnabled(true);
+        if(updating) {
+            updateData_("https://api.covid19india.org/resources/resources.json");
+            updating = false;
         }
     }
 

@@ -4,12 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        >
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/gif_cases2"
@@ -21,7 +23,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/res004"
+            android:src="@drawable/loading"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintVertical_bias="0.5"
             android:elevation="10dp"
@@ -30,42 +32,59 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardBackgroundColor="@color/DarkGray"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <Button
+                    android:id="@+id/update_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update"
+                    android:layout_margin="2dp"
+                    android:backgroundTint="@color/DarkGray"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
         <Switch
             android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:text="@string/listview"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            app:cardBackgroundColor="#E6E6E6"
+            app:cardBackgroundColor="@color/DarkGray"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:layout_constraintBottom_toTopOf="@+id/cardview2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/switch1"
+            app:layout_constraintTop_toBottomOf="@id/cardview0"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,12 +96,10 @@
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="164dp"
-                    android:layout_height="39dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:dropDownWidth="200dp"
+                    android:dropDownWidth="150dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.548"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +114,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_label"
-                    android:backgroundTint="#E6E6E6"
+                    android:backgroundTint="@color/DarkGray"
                     android:text="Total"
                     android:gravity="center"
                     android:textColor="@android:color/black"
@@ -132,7 +149,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/round_label"
-                    android:backgroundTint="#E6E6E6"
+                    android:backgroundTint="@color/DarkGray"
                     android:gravity="center"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
@@ -151,7 +168,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_text"
-                    android:backgroundTint="@color/red"
+                    android:backgroundTint="@color/IndianRed"
                     android:gravity="center"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"
@@ -167,7 +184,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_label"
-                    android:backgroundTint="#E6E6E6"
+                    android:backgroundTint="@color/DarkGray"
                     android:text="Recovered"
                     android:gravity="center"
                     android:textColor="@android:color/black"
@@ -186,7 +203,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_text"
-                    android:backgroundTint="@color/lightgreen"
+                    android:backgroundTint="@color/DarkGreen"
                     android:gravity="center"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"
@@ -203,7 +220,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_label"
-                    android:backgroundTint="#E6E6E6"
+                    android:backgroundTint="@color/DarkGray"
                     android:text="Death"
                     android:gravity="center"
                     android:textColor="@android:color/black"
@@ -222,7 +239,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_text"
-                    android:backgroundTint="@color/grey"
+                    android:backgroundTint="@color/DimGray"
                     android:gravity="center"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"
@@ -239,44 +256,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            app:cardBackgroundColor="#E6E6E6"
+            app:cardBackgroundColor="@color/DarkGray"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
-            android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardview1"
+            app:layout_constraintBottom_toBottomOf="parent"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
-            <Spinner
-                android:id="@+id/spinner2"
-                android:layout_width="164dp"
-                android:layout_height="39dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:dropDownWidth="200dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/graph"
-                />
 
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph"
-                android:layout_width="match_parent"
-                android:layout_height="250dip"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintTop_toBottomOf="@id/spinner2"/>
+                <Spinner
+                    android:id="@+id/spinner2"
+                    android:layout_width="164dp"
+                    android:layout_height="39dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:dropDownWidth="150dp"
+                    app:layout_constraintBottom_toTopOf="@id/clickView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/clickView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@id/graph"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    />
+
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/graph"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dip"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintTop_toBottomOf="@id/clickView"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

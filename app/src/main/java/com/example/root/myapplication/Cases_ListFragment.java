@@ -1,10 +1,14 @@
 package com.example.root.myapplication;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +48,7 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
     }
     public Switch switch_detail;
     public View root;
-    String[] states = {"Maharashtra", "Gujarat", "Tamil Nadu", "Delhi", "Rajasthan", "Madhya Pradesh", "Uttar Pradesh", "West Bengal", "Andhra Pradesh", "Punjab", "Telangana", "Bihar", "Jammu and Kashmir", "Karnataka", "Haryana", "Odisha", "Kerala", "Jharkhand", "Chandigarh", "Tripura", "Assam", "Uttarakhand", "Himachal Pradesh", "Chhattisgarh", "Ladakh", "Andaman and Nicobar", "Goa", "Puducherry","Meghalaya", "Manipur", "Mizoram", "Arunachal Pradesh", "Dadra & Nagar Haveli", "Nagaland", "Lakshadweep", "Sikkim"};
+    String[] states_list = {"Maharashtra", "Gujarat", "Tamil Nadu", "Delhi", "Rajasthan", "Madhya Pradesh", "Uttar Pradesh", "West Bengal", "Andhra Pradesh", "Punjab", "Telangana", "Bihar", "Jammu and Kashmir", "Karnataka", "Haryana", "Odisha", "Kerala", "Jharkhand", "Chandigarh", "Tripura", "Assam", "Uttarakhand", "Himachal Pradesh", "Chhattisgarh", "Ladakh", "Andaman and Nicobar", "Goa", "Puducherry","Meghalaya", "Manipur", "Mizoram", "Arunachal Pradesh", "Dadra & Nagar Haveli", "Nagaland", "Lakshadweep", "Sikkim"};
     String[] sort = {"State", "Total", "Active", "Cured", "Death"};
     public Spinner spinner3;
     ArrayList<obj> data;
@@ -56,11 +60,11 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
         root = inflater.inflate(R.layout.nav_cases_list, container, false);
         switch_detail = root.findViewById(R.id.switch2);
         spinner3 = root.findViewById(R.id.spinner3);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, sort);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, sort);
+        //adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner3.setAdapter(adapter);
         spinner3.setOnItemSelectedListener(this);
-        Arrays.sort(states);
+        Arrays.sort(states_list);
 
         tableLayout = root.findViewById(R.id.list_cases);
 
@@ -74,10 +78,10 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
     public ArrayList<obj> setData(Bundle b)
     {
         ArrayList<obj> ar = new ArrayList<>();
-        for(int i=0;i<states.length;i++)
+        for(int i=0;i<states_list.length;i++)
         {
-            ArrayList<String> temp = b.getStringArrayList(states[i]);
-            ar.add(new obj(states[i], Integer.parseInt(temp.get(0)), Integer.parseInt(temp.get(1)), Integer.parseInt(temp.get(2)), Integer.parseInt(temp.get(3))));
+            ArrayList<String> temp = b.getStringArrayList(states_list[i]);
+            ar.add(new obj(states_list[i], Integer.parseInt(temp.get(0)), Integer.parseInt(temp.get(1)), Integer.parseInt(temp.get(2)), Integer.parseInt(temp.get(3))));
         }
         return ar;
     }
@@ -96,10 +100,22 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
             TableRow.LayoutParams lp  = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
             row.setLayoutParams(lp);
             TextView t1 = new TextView(getContext());
+            t1.setTextColor(Color.BLACK);
+            t1.setGravity(Gravity.CENTER_VERTICAL);
+            t1.setHeight(80);
+            t1.setTextSize(17);
             TextView t2 = new TextView(getContext());
+            t2.setTextColor(Color.WHITE);
+            t2.setTextSize(17);
             TextView t3 = new TextView(getContext());
+            t3.setTextColor(Color.RED);
+            t3.setTextSize(17);
             TextView t4 = new TextView(getContext());
+            t4.setTextColor(Color.GREEN);
+            t4.setTextSize(17);
             TextView t5 = new TextView(getContext());
+            t5.setTextColor(Color.DKGRAY);
+            t5.setTextSize(17);
             t1.setText("State");
             row.addView(t1);
             t2.setText("Total");
@@ -110,7 +126,7 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
             row.addView(t4);
             t5.setText("Death");
             row.addView(t5);
-            row.setMinimumHeight(50);
+            //row.setMinimumHeight(100);
             tableLayout.addView(row);
         }
         row = new TableRow(getContext());
@@ -127,10 +143,17 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
             TableRow.LayoutParams lp  = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
             row.setLayoutParams(lp);
             TextView t1 = new TextView(getContext());
+            t1.setTextColor(Color.BLACK);
+            t1.setGravity(Gravity.CENTER_VERTICAL);
+            t1.setHeight(70);
             TextView t2 = new TextView(getContext());
+            t2.setTextColor(Color.WHITE);
             TextView t3 = new TextView(getContext());
+            t3.setTextColor(Color.RED);
             TextView t4 = new TextView(getContext());
+            t4.setTextColor(Color.GREEN);
             TextView t5 = new TextView(getContext());
+            t5.setTextColor(Color.DKGRAY);
             obj temp= data.get(i);
             t1.setText(temp.s);
             row.addView(t1);
@@ -142,14 +165,14 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
             row.addView(t4);
             t5.setText(Integer.toString(temp.d));
             row.addView(t5);
-            row.setMinimumHeight(50);
+            //row.setMinimumHeight(70);
             tableLayout.addView(row);
-            TableRow row2 = new TableRow(getContext());
-            TableRow.LayoutParams lp_  = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-            row2.setLayoutParams(lp_);
-            row2.setBackgroundResource(R.color.red);
-            row2.setMinimumHeight(3);
-            tableLayout.addView(row2);
+            //TableRow row2 = new TableRow(getContext());
+            //TableRow.LayoutParams lp_  = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+            //row2.setLayoutParams(lp_);
+            //row2.setBackgroundResource(R.color.grey);
+            //row2.setMinimumHeight(3);
+            //tableLayout.addView(row2);
         }
         switch_detail.setOnCheckedChangeListener(this);
     }
@@ -211,9 +234,14 @@ public class Cases_ListFragment extends Fragment implements CompoundButton.OnChe
             Bundle b = new Bundle();
             casesFragment.setArguments(b);
             FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, casesFragment);
-            fragmentTransaction.commit();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fragmentTransaction.commit();
+                }
+            }, 200);
         }
     }
 

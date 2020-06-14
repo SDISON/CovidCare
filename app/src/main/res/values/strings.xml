@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">CovidSafe</string>
     <string name="button">Button</string>
     <string name="activeCases">TextView</string>
     <string name="recoveredCases">TextView</string>
@@ -15,4 +15,9 @@
     <string name="switch_detail">Switch</string>
     <string name="detailview">DetailView</string>
     <string name="listview">ListView</string>
+    <string name="todo">TODO</string>
+    <string name="stop_service">Stop Service</string>
+    <string name="button3">Import wallet</string>
+    <string name="button4">Create wallet</string>
+    <string name="button5">Ok</string>
 </resources>
